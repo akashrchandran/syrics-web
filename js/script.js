@@ -1,6 +1,5 @@
-const button = document.getElementsByTagName('button')[0];
-
-
+const button = document.getElementById('download-button');
+const text = document.getElementById('search');
 button.addEventListener('click', function() {
-  console.log('button clicked');
+  trackid = text.value;
 });

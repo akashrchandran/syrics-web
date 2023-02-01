@@ -1,102 +1,25 @@
 body {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-image: url("/img/background.png");
+	background: #1d976c; /* fallback for old browsers */
+	background: -webkit-linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%; /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	-webkit-animation: gradientAnimate 60s ease infinite;
+	-moz-animation: gradientAnimate 60s ease infinite;
+	-o-animation: gradientAnimate 60s ease infinite;
+	animation: gradientAnimate 60s ease infinite;
+	/* font-family: Source Sans Pro, sans-serif; */
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: larger;
-	line-height: 2vh;
-	margin-top: 10%;
-	background-color: #5b7b73;
-	padding: 20px;
-	border-radius: 10px;
+.navbar {
+	background-color: transparent;
 }
 
-input[type="url"] {
-	height: 34px;
-	width: 100%;
-	float: right;
+.searchbar {
+	width: 40vw;
+	height: 100vh;
 }
 
-.btn {
-	all: unset;
-	cursor: pointer;
-	flex: 1 1 auto;
-	margin: 10px;
-	padding: 30px;
-	text-align: center;
-	text-transform: uppercase;
-	transition: 0.5s;
-	background-size: 200% auto;
-	color: white;
-	box-shadow: 0 0 20px #eee;
-	border-radius: 10px;
-	background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
-   }
-.btn:hover {
-	background-position: right center; /* change the direction of the change here */
-  }
-
-#cover-spin {
-    position:fixed;
-    width:100%;
-    left:0;right:0;top:0;bottom:0;
-    background-color: rgba(255,255,255,0.7);
-    z-index:1;
-    display:none;
-}
-
-@-webkit-keyframes spin {
-	from {-webkit-transform:rotate(0deg);}
-	to {-webkit-transform:rotate(360deg);}
-}
-
-@keyframes spin {
-	from {transform:rotate(0deg);}
-	to {transform:rotate(360deg);}
-}
-
-#cover-spin::after {
-    content:'';
-    display:block;
-    position:absolute;
-    left:48%;top:40%;
-    width:40px;height:40px;
-    border-style:solid;
-    border-color:black;
-    border-top-color:transparent;
-    border-width: 4px;
-    border-radius:50%;
-    -webkit-animation: spin .8s linear infinite;
-    animation: spin .8s linear infinite;
-}
-
-.music-info {
-	display: flex;
-	flex-direction: row;
-	background-color: white;
-	width: 70vw;
-	height: 70vh;
-}
-
-.music-cover {
-	padding: 35px;
-}
-
-.music-cover img {
-	border-radius: 10px;
-}
-
-.music-desc {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-
+img {
+	height: 500px;
+	width: 500px;
+	margin-top: 100px;
 }

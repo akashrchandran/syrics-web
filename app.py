@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from spotify import get_album, get_track, get_play
+from .spotify import get_album, get_track, get_play
 
 app = Flask(__name__)
 
@@ -29,5 +29,3 @@ def download():
             return "Invalid type"
     else:
         return "No arguments provided"
-
-app.run()

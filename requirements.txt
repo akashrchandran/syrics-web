@@ -1,2 +1,2 @@
-flask
-spotipy
+flask==2.2.2
+spotipy==2.22.1

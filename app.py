@@ -29,3 +29,6 @@ def download():
             return "Invalid type"
     else:
         return "No arguments provided"
+
+if __name__ == "__main__":
+    app.run()

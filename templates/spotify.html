@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<section id="github" class="github_wrapper">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-lg-5 mb-lg-0 w-25 text-center">
+                <img class="img-fluid rounded-circle m-2" alt="git profile pic" height="250px" width="250px"
+                    id="github_avatar" src="{{ data['image'] }}" />
+            </div>
+            <div class="col-lg-7 ps-lg-5 text-center text-lg-start">
+                <div class="my-3 my-lg-0">
+                    <h3 id="github_name"></h3>
+                    <span class="subtitle" id="github_username"></span>
+                    <p id="github_about"></p>
+                </div>
+                <div class="d-flex flex-column bd-highlight m-5">
+                    <h1>{{ data["name"] }}</h1>
+                    <h2>{{ data['artist'] }}</h2>
+                    <h4>{{ data['release_date'] }}</h4>
+                    <h4>{{ data['total_tracks'] }}</h4>
+                    <h4>{{ data['label'] }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="m-3">
+    <div class="container">
+        <ul class="list-group">
+            {% for track in data['tracks'] %}
+            <li class="list-group-item">
+                <i class="fa fa-play-circle mx-2"></i>
+                <span class="fs-5">{{ track['track_number']}}. {{ track['name'] }}</span>
+                <button type="button" class="btn btn-success float-end" aria-label="download" value="{{ track['id'] }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+{% endblock %}

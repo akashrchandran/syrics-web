@@ -30,4 +30,4 @@ def download():
     else:
         return "No arguments provided"
 
-app.run(host='0.0.0.0', debug=True)
+app.run()

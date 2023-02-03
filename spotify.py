@@ -44,12 +44,12 @@ def get_play(play_id):
             }
 
 def check_regex(url):
-    print(url)
     match = re.match(REGEX, url)
-    print(match)
-    if match.group(2):
+    if match:
+        return None, None
+    if match[2]:
         return match[2], match[3]
-    elif match.group(1):
+    elif match[1]:
         return match[1], match[3]
     else:
         return None, None

@@ -15,11 +15,15 @@
                     <p id="github_about"></p>
                 </div>
                 <div class="d-flex flex-column bd-highlight m-5">
-                    <h1>{{ data["name"] }}</h1>
+                    <h1 id="album_name">{{ data["name"] }}</h1>
                     <h2>{{ data['artist'] }}</h2>
                     <h4>{{ data['release_date'] }}</h4>
                     <h4>{{ data['total_tracks'] }}</h4>
                     <h4>{{ data['label'] }}</h4>
+                    <button type="button" class="btn btn-success w-50" title="download lyrics" id="downzip">
+                        <span class="fs-4">Download Zip</span> 
+                        <i class="fa fa-file-archive fa-2x mx-3" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -32,7 +36,7 @@
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track_number']}}. {{ track['name'] }}</span>
-                <button type="button" class="btn btn-success float-end" aria-label="download" value="{{ track['id'] }}">
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>

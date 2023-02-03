@@ -1,10 +1,10 @@
 import re
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from dotenv import load_dotenv
 import os
 
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 cid = os.getenv("SPOTIFY_CLIENT_ID")
 secret = os.getenv("SPOTIFY_CLIENT_SECRET")

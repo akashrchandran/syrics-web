@@ -12,7 +12,6 @@ def download():
     if not request.form:
         return "No arguments provided"
     url_type, id = check_regex(request.form.get('url'))
-    print(url_type, id)
     if url_type == 'album':
         return render_template("spotify.html", data=get_album(id))
     elif url_type == 'track':
@@ -20,6 +19,7 @@ def download():
     elif url_type == 'playlist':
         return render_template("spotify.html", data=get_play(id))
     else:
+        print(url_type, id)
         return "Invalid type"
 
 if __name__ == '__main__':

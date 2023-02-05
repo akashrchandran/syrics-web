@@ -45,7 +45,7 @@ def get_play(play_id):
 
 def check_regex(url):
     match = re.match(REGEX, url)
-    if match:
+    if not match:
         return None, None
     if match[2]:
         return match[2], match[3]

@@ -4,26 +4,35 @@
 <section id="github" class="github_wrapper">
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
-            <div class="col-lg-5 mb-lg-0 w-25 text-center">
-                <img class="img-fluid rounded-circle m-2" alt="git profile pic" id="github_avatar" src="{{ data['image'] }}" />
+            <div class="col w-50 text-center">
+                <img class="img-fluid rounded-5 m-2" alt="git profile pic" id="github_avatar" src="{{ data['image'] }}" style="height: 40vh;width: 40vh;"/>
             </div>
-            <div class="col-lg-7 ps-lg-5 text-center text-lg-start">
+            <div class="col text-center text-md-start">
                 <div class="my-3 my-lg-0">
                     <h3 id="github_name"></h3>
                     <span class="subtitle" id="github_username"></span>
                     <p id="github_about"></p>
                 </div>
+                {% if types == 'album' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
                     <h2>{{ data['artist'] }}</h2>
                     <h4>{{ data['release_date'] }}</h4>
-                    <h4>{{ data['total_tracks'] }}</h4>
+                    <h4>{{ data['total_tracks'] }} Tracks</h4>
                     <h4>{{ data['label'] }}</h4>
-                    <button type="button" class="btn btn-success w-50" title="download lyrics" id="downzip">
-                        <span class="fs-4">Download Zip</span> 
-                        <i class="fa fa-file-archive fa-2x mx-3" aria-hidden="true"></i>
-                    </button>
-                </div>
+                {% endif %}
+                {% if types == 'playlist' %}
+                <div class="d-flex flex-column bd-highlight m-1">
+                    <h1 id="album_name">{{ data["name"] }}</h1>
+                    <h2>{{ data['owner'] }}</h2>
+                    <h4>{{ data['collaborative'] }}</h4>
+                    <h4>{{ data['total_tracks'] }} Tracks</h4>
+                {% endif %}
+            </div>
+            <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
+                <span class="fs-4">Download Zip</span> 
+                <i class="fa fa-file-archive fa-2x mx-3" aria-hidden="true"></i>
+            </button>
             </div>
         </div>
     </div>

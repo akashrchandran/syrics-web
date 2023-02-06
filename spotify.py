@@ -23,7 +23,7 @@ def get_album(album_id):
             "total_tracks": album_data['total_tracks'],
             "release_date": album_data['release_date'],
             "label": album_data['label'],
-            "image": album_data['images'][1]['url'],
+            "image": album_data['images'][0]['url'],
             "tracks": album_data['tracks']['items']
             }
 
@@ -39,7 +39,7 @@ def get_play(play_id):
             "owner": play_data['owner'], 
             "total_tracks": play_data['total_tracks'], 
             "collaborative": play_data['collaborative'],
-            "image": play_data['images'][1]['url'],
+            "image": play_data['images'][0]['url'],
             "tracks": play_data['tracks']['items']
             }
 

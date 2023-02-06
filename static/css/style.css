@@ -1,12 +1,19 @@
 body {
-	background: #1d976c; /* fallback for old browsers */
-	background: -webkit-linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%; /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	background: #1d976c;
+	/* fallback for old browsers */
+	background: -webkit-linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%;
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(230deg, rgb(75, 207, 147), rgb(75, 121, 207), rgb(162, 75, 207)) 0% 0% / 300% 300%;
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 	-webkit-animation: gradientAnimate 60s ease infinite;
 	-moz-animation: gradientAnimate 60s ease infinite;
 	-o-animation: gradientAnimate 60s ease infinite;
 	animation: gradientAnimate 60s ease infinite;
 	/* font-family: Source Sans Pro, sans-serif; */
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	backdrop-filter: blur(10px);
 }
 
 .navbar {
@@ -16,10 +23,4 @@ body {
 .searchbar {
 	width: 40vw;
 	height: 100vh;
-}
-
-img {
-	height: 500px;
-	width: 500px;
-	margin-top: 100px;
 }

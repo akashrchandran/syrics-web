@@ -24,3 +24,9 @@ body {
 	width: 40vw;
 	height: 100vh;
 }
+
+.syrics {
+	height: 500px;
+	width: 500px;
+	margin-top: 100px;
+}

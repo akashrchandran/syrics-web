@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
             <div class="col w-50 text-center">
-                <img class="img-fluid rounded-5 m-2" alt="git profile pic" id="github_avatar" src="{{ data['image'] }}" style="height: 40vh;width: 40vh;"/>
+                <img class="img-thumbnail rounded-5 m-2" alt="git profile pic" id="github_avatar" src="{{ data['image'] }}" width="400" height="400"/>
             </div>
             <div class="col text-center text-md-start">
                 <div class="my-3 my-lg-0">
@@ -20,13 +20,20 @@
                     <h4>{{ data['release_date'] }}</h4>
                     <h4>{{ data['total_tracks'] }} Tracks</h4>
                     <h4>{{ data['label'] }}</h4>
-                {% endif %}
-                {% if types == 'playlist' %}
+                {% elif types == 'playlist' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
+                    <small>{{ data["desc"] }}</small>
                     <h2>{{ data['owner'] }}</h2>
-                    <h4>{{ data['collaborative'] }}</h4>
+                    <h4>{{ data['followers'] }} followers</h4>
                     <h4>{{ data['total_tracks'] }} Tracks</h4>
+                {% elif types == 'track' %}
+                <div class="d-flex flex-column bd-highlight m-1">
+                    <h1 id="album_name">{{ data["name"] }}</h1>
+                    <h2>{{ data['artist'] }}</h2>
+                    <h4>{{ data['release_date'] }}</h4>
+                    <h4>{{ data['explicit'] }} track</h4>
+                    <h4>{{ data['popularity'] }} popularity</h4>
                 {% endif %}
             </div>
             <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
@@ -40,6 +47,17 @@
 <section class="m-3">
     <div class="container">
         <ul class="list-group">
+            {% if types == 'album' %}
+            {% for track in data['tracks'] %}
+            <li class="list-group-item">
+                <i class="fa fa-play-circle mx-2"></i>
+                <span class="fs-5">{{ track['track_number']}}. {{ track['name'] }}</span>
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+            </li>
+            {% endfor %}
+            {% elif types == 'playlist' %}
             {% for track in data['tracks'] %}
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
@@ -49,6 +67,15 @@
                 </button>
             </li>
             {% endfor %}
+            {% elif types == 'track' %}
+            <li class="list-group-item">
+                <i class="fa fa-play-circle mx-2"></i>
+                <span class="fs-5">{{ data['track_number']}}. {{ data['name'] }}</span>
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ data['id'] }}" data-name="{{ data['track_number']}}. {{ data['name'] }}">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                </button>
+            </li>
+            {% endif %}
         </ul>
     </div>
 </section>

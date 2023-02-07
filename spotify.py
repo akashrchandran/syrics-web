@@ -28,20 +28,35 @@ def get_album(album_id):
             }
 
 def get_track(track_id):
-    return sp.track(track_id)
+    track_data = sp.track(track_id)
+    track_data['artist'] = ','.join([artist['name'] for artist in track_data['artists']])
+    return {
+        "name": track_data['name'],
+        "artist": track_data['artist'],
+        "album": track_data['album']['name'],
+        "image": track_data['album']['images'][0]['url'],
+        "explicit": 'Explicit' if track_data['explicit'] else 'Not Explicit',
+        "release_date": track_data['album']['release_date'],
+        'popularity': track_data['popularity'],
+        'track_number': track_data['track_number'],
+        'id': track_data['id'],
+    }
+
 
 def get_play(play_id):
     play_data = sp.playlist(play_id)
     play_data['owner'] = play_data['owner']['display_name']
     play_data['total_tracks'] = play_data['tracks']['total']
-    play_data['collaborative'] = '[C]' if play_data['collaborative'] else ''
-    return {"name": play_data['name'], 
-            "owner": play_data['owner'], 
-            "total_tracks": play_data['total_tracks'], 
-            "collaborative": play_data['collaborative'],
-            "image": play_data['images'][0]['url'],
-            "tracks": play_data['tracks']['items']
-            }
+    play_data['collaborative'] = 'Collaborative' if play_data['collaborative'] else 'Not Collaborative'
+    return {
+        "name": play_data['name'],
+        "owner": play_data['owner'],
+        "total_tracks": play_data['total_tracks'],
+        "desc": play_data['description'] or 'No Description',
+        'followers': play_data['followers']['total'],
+        "image": play_data['images'][0]['url'],
+        "tracks": play_data['tracks']['items'],
+    }
 
 def check_regex(url):
     match = re.match(REGEX, url)

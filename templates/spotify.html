@@ -52,6 +52,7 @@
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track_number']}}. {{ track['name'] }}</span>
+                <span class="bg-danger text-wrap mx-3"></span>
                 <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
@@ -62,7 +63,8 @@
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track']['track_number']}}. {{ track['track']['name'] }}</span>
-                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['track']['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
+                <span class="bg-danger text-wrap mx-3"></span>
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['track']['id'] }}" data-name="{{ track['track']['track_number']}}. {{ track['track']['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>
@@ -70,7 +72,8 @@
             {% elif types == 'track' %}
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
-                <span class="fs-5">{{ data['track_number']}}. {{ data['name'] }}</span>
+                <span class="fs-5 m-0">{{ data['track_number']}}. {{ data['name'] }}</span>
+                <span class="bg-danger text-wrap mx-3"></span>
                 <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ data['id'] }}" data-name="{{ data['track_number']}}. {{ data['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>

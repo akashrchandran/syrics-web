@@ -1,6 +1,8 @@
 const downloadbtn = document.getElementsByName('download');
 const downzip = document.getElementById('downzip');
-const album_name = document.getElementById('album_name').textContent; 
+const album_name = document.getElementById('album_name').textContent;
+const toastmessage = document.getElementById('liveToast')
+const toastbody = document.getElementsByClassName('toast-body')
 
 async function get_lyrics(id) {
     const response = await fetch(`https://spotify-lyric-api.herokuapp.com/?trackid=${id}&format=lrc`);
@@ -23,8 +25,10 @@ save_lyrics = (lyrics, name) => {
 downzip.addEventListener('click', () => {
     const zip = new JSZip();
     const promises = [];
+    let count = 0;
+    downzip.innerHTML = `<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>`;
+    downzip.classList.add('disabled');
     downloadbtn.forEach((btn) => {
-        console.log('new');
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
         promises.push(get_lyrics(id).then(lyrics => {
@@ -36,15 +40,24 @@ downzip.addEventListener('click', () => {
                 return;
             }
             zip.file(`${name}.lrc`, lyrics.join(""));
+            count++;
         }));
     });
-    if (promises.length != 0) {
     Promise.all(promises).then(() => {
-        zip.generateAsync({type: "blob"}).then((content) => {
+        if (count != 0) {
+            zip.generateAsync({type: "blob"}).then((content) => {
             window.saveAs(content, `${album_name}.zip`);
-        });
+            setInterval(() => {
+            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
+            downzip.classList.remove('disabled');
+            }, 2000);
+        })}
+        else {
+            showToast('None of the tracks have lyrics');
+            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
+
+        }
     });
-    };
 });
 
 downloadbtn.forEach((btn) => {
@@ -69,3 +82,8 @@ downloadbtn.forEach((btn) => {
     });
 });
 
+showToast = (msg) => {
+    const toast = new bootstrap.Toast(toastmessage)
+    toastbody[0].textContent = msg;
+    toast.show()
+}

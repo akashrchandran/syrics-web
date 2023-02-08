@@ -5,7 +5,8 @@
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
             <div class="col w-50 text-center">
-                <img class="img-thumbnail rounded-5 m-2" alt="git profile pic" id="github_avatar" src="{{ data['image'] }}" width="400" height="400"/>
+                <img class="img-thumbnail rounded-5 m-2" alt="git profile pic" id="github_avatar"
+                    src="{{ data['image'] }}" width="400" height="400" />
             </div>
             <div class="col text-center text-md-start">
                 <div class="my-3 my-lg-0">
@@ -20,6 +21,11 @@
                     <h4>{{ data['release_date'] }}</h4>
                     <h4>{{ data['total_tracks'] }} Tracks</h4>
                     <h4>{{ data['label'] }}</h4>
+                </div>
+                <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
+                    <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
+
+                </button>
                 {% elif types == 'playlist' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
@@ -27,6 +33,10 @@
                     <h2>{{ data['owner'] }}</h2>
                     <h4>{{ data['followers'] }} followers</h4>
                     <h4>{{ data['total_tracks'] }} Tracks</h4>
+                </div>
+                <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
+                    <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
+                </button>
                 {% elif types == 'track' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
@@ -34,12 +44,11 @@
                     <h4>{{ data['release_date'] }}</h4>
                     <h4>{{ data['explicit'] }} track</h4>
                     <h4>{{ data['popularity'] }} popularity</h4>
+                </div>
+                <button class="btn btn-success w-md-50 invisible" title="download lyrics" id="downzip">
+                    <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
+                </button>
                 {% endif %}
-            </div>
-            <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
-                <span class="fs-4">Download Zip</span> 
-                <i class="fa fa-file-archive fa-2x mx-3" aria-hidden="true"></i>
-            </button>
             </div>
         </div>
     </div>
@@ -53,7 +62,8 @@
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track_number']}}. {{ track['name'] }}</span>
                 <span class="bg-danger text-wrap mx-3"></span>
-                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download"
+                    data-id="{{ track['id'] }}" data-name="{{ track['track_number']}}. {{ track['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>
@@ -64,7 +74,9 @@
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track']['track_number']}}. {{ track['track']['name'] }}</span>
                 <span class="bg-danger text-wrap mx-3"></span>
-                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ track['track']['id'] }}" data-name="{{ track['track']['track_number']}}. {{ track['track']['name'] }}">
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download"
+                    data-id="{{ track['track']['id'] }}"
+                    data-name="{{ track['track']['track_number']}}. {{ track['track']['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>
@@ -74,7 +86,8 @@
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5 m-0">{{ data['track_number']}}. {{ data['name'] }}</span>
                 <span class="bg-danger text-wrap mx-3"></span>
-                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download" data-id="{{ data['id'] }}" data-name="{{ data['track_number']}}. {{ data['name'] }}">
+                <button type="button" class="btn btn-success float-end" title="download lyrics" name="download"
+                    data-id="{{ data['id'] }}" data-name="{{ data['track_number']}}. {{ data['name'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>

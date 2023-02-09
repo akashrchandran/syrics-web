@@ -19,7 +19,6 @@ def download():
     elif url_type == 'playlist':
         return render_template("spotify.html", data=get_play(id), types='playlist')
     else:
-        print(url_type, id)
         return "Invalid type"
 
 if __name__ == '__main__':

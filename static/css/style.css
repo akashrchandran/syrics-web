@@ -14,8 +14,12 @@ body {
 	height: 100%;
 }
 
+.container {
+	width: 100%;
+	height: 100%;
+}
 .searchbar {
-	width: 40vw;
+	width: 100vw;
 	height: 100vh;
 }
 

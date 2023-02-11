@@ -1,23 +1,28 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="container searchbar">
-        <div class="container">
-            <div class="text-center align-self-start">
-                <img src="https://ik.imagekit.io/gyzvlawdz/Projects/syrics/Black_Modern_Business_Logo__600___500_px___2240___1260_px__cYRO9HGTQ.png"
-                    class="img-fluid syrics">
-            </div>
-        </div>
-        <div class="container w-50">
-            <div class="text-center align-self-start">
-                <div class="form-floating">
-                    <form action="spotify" method="post">
-                    <input type="text" class="form-control input-sm" id="floatingInput" name="url" placeholder="Enter a Spotify link">
-                    <button type="submit" value="submit" class="btn btn-primary mt-3">Search</button>
+<div class="searchbar px-3 d-flex flex-column align-items-center">
+    <div class="row">
+        <div class="text-center">
+            <img src="https://ik.imagekit.io/gyzvlawdz/Projects/syrics/Black_Modern_Business_Logo__600___500_px___2240___1260_px__cYRO9HGTQ.png"
+                class="img-fluid syrics">
+            <div class="form-floating">
+                <form action="spotify" method="post">
+                    <input type="text" class="form-control input-sm mb-3" id="floatingInput" name="url"
+                        placeholder="Enter a Spotify link">
+                    <button type="submit" value="submit" class="btn btn-success btn-lg">Search</button>
                     <!-- <div class="m-4 ">
-                    </div> -->
+                            </div> -->
                 </form>
-                </div>
             </div>
         </div>
     </div>
-{% endblock %}
+</div>
+    {% endblock %}
+
+    {% block javascript %}
+    {% if error %}
+    <script>
+        showToast("{{ error }}", "error");
+    </script>
+    {% endif %}
+    {% endblock %}

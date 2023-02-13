@@ -1,19 +1,14 @@
 {% extends 'base.html' %}
 {% block body %}
 
-<section id="github" class="github_wrapper">
+<section id="music_info" class="music_wrapper">
     <div class="container">
         <div class="row justify-content-md-center align-items-center">
             <div class="col w-50 text-center">
-                <img class="img-thumbnail rounded-5 m-2" alt="git profile pic" id="github_avatar"
+                <img class="img-thumbnail rounded-5 m-2" alt="music cover pic" id="music_cover"
                     src="{{ data['image'] }}" width="400" height="400" />
             </div>
             <div class="col text-center text-md-start">
-                <div class="my-3 my-lg-0">
-                    <h3 id="github_name"></h3>
-                    <span class="subtitle" id="github_username"></span>
-                    <p id="github_about"></p>
-                </div>
                 {% if types == 'album' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
@@ -73,7 +68,7 @@
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
                 <span class="fs-5">{{ track['track']['track_number']}}. {{ track['track']['name'] }}</span>
-                <span class="bg-danger text-wrap mx-3"></span>
+                <span class="text-wrap mx-3"></span>
                 <button type="button" class="btn btn-success float-end" title="download lyrics" name="download"
                     data-id="{{ track['track']['id'] }}"
                     data-name="{{ track['track']['track_number']}}. {{ track['track']['name'] }}">

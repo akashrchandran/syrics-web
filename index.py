@@ -19,7 +19,7 @@ def download():
     elif url_type == 'playlist':
         return render_template("spotify.html", data=get_play(id), types='playlist')
     else:
-        return render_template("index.html", error="Invalid URL...Please check the URL and try again")
+        return render_template("index.html", error="Invalid URL...Please check the URL and try again"), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000)

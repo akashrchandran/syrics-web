@@ -9,14 +9,22 @@ async function get_lyrics(id) {
     }
     const data = await response.json();
     lyrics = [];
-    data.lines.forEach(line => {
-        lyrics.push(`[${line['timeTag']}] ${line['words']}\n`);
-    });
-    return lyrics;
+    let sync = true;
+    if (data.syncType == "UNSYNCED") {
+        data.lines.forEach(line => {
+            lyrics.push(`${line['words']}\n`);
+        });
+        sync = false;
+    } else {
+        data.lines.forEach(line => {
+            lyrics.push(`[${line['timeTag']}] ${line['words']}\n`);
+        });
+    }
+    return [lyrics, sync];
 }
 
 save_lyrics = (lyrics, name) => {
-    const blob = new Blob(lyrics, {type: "text/plain;charset=utf-8"});
+    const blob = new Blob(lyrics, { type: "text/plain;charset=utf-8" });
     window.saveAs(blob, name);
 }
 
@@ -29,13 +37,19 @@ downzip.addEventListener('click', () => {
     downloadbtn.forEach((btn) => {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
-        promises.push(get_lyrics(id).then(lyrics => {
+        promises.push(get_lyrics(id).then(response => {
+            const lyrics = response[0]
+            const sync = response[1]
             if (lyrics.length == 0) {
                 btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
                 btn.classList.add('disabled');
-                btn.previousElementSibling.classList.add('badge');
+                btn.previousElementSibling.classList.add('badge', 'bg-danger');
                 btn.previousElementSibling.textContent = 'No lyrics found';
                 return;
+            }
+            else if (!sync) {
+                btn.previousElementSibling.classList.add('badge', 'bg-warning');
+                btn.previousElementSibling.textContent = 'Synced lyrics not available';
             }
             zip.file(`${name}.lrc`, lyrics.join(""));
             count++;
@@ -43,13 +57,14 @@ downzip.addEventListener('click', () => {
     });
     Promise.all(promises).then(() => {
         if (count != 0) {
-            zip.generateAsync({type: "blob"}).then((content) => {
-            window.saveAs(content, `${album_name}.zip`);
-            setInterval(() => {
-            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
-            downzip.classList.remove('disabled');
-            }, 2000);
-        })}
+            zip.generateAsync({ type: "blob" }).then((content) => {
+                window.saveAs(content, `${album_name}.zip`);
+                setInterval(() => {
+                    downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
+                    downzip.classList.remove('disabled');
+                }, 2000);
+            })
+        }
         else {
             showToast('None of the tracks have lyrics');
             downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
@@ -63,12 +78,18 @@ downloadbtn.forEach((btn) => {
         btn.classList.add('disabled');
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
-        const lyrics = await get_lyrics(id);
+        const response = await get_lyrics(id);
+        let lyrics = response[0];
+        let sync = response[1];
         if (lyrics.length == 0) {
             btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
             btn.previousElementSibling.classList.add('badge');
             btn.previousElementSibling.textContent = 'No lyrics found';
             return;
+        }
+        else if (!sync) {
+            btn.previousElementSibling.classList.add('badge', 'bg-warning');
+            btn.previousElementSibling.textContent = 'Synced lyrics not available';
         }
         save_lyrics(lyrics, `${name}.lrc`);
         btn.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i>';

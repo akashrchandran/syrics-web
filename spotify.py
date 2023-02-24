@@ -68,3 +68,14 @@ def check_regex(url):
         return match[1], match[3]
     else:
         return None, None
+    
+def query_spotify(q=None, type='track,album,playlist'):
+    data = sp.search(q=q, type=type, limit=1)
+    response = []
+    if data['tracks']['items']:
+        response.append({'name': data['tracks']['items'][0]['name'], 'type': 'track', 'image;:': data['tracks']['items'][0]['album']['images'][0]['url']})
+    if data['albums']['items']:
+        response.append({'name': data['albums']['items'][0]['name'], 'type': 'album', 'image': data['albums']['items'][0]['images'][0]['url']})
+    if data['playlists']['items']:
+        response.append({'name': data['playlists']['items'][0]['name'], 'type': 'playlist', 'image': data['playlists']['items'][0]['images'][0]['url']})
+    return response

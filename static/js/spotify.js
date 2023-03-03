@@ -5,7 +5,7 @@ const album_name = document.getElementById('album_name').textContent;
 async function get_lyrics(id) {
     const response = await fetch(`https://spotify-lyric-api.herokuapp.com/?trackid=${id}&format=lrc`);
     if (response.status != 200) {
-        return [];
+        return [null, null];
     }
     const data = await response.json();
     lyrics = [];
@@ -40,7 +40,7 @@ downzip.addEventListener('click', () => {
         promises.push(get_lyrics(id).then(response => {
             const lyrics = response[0]
             const sync = response[1]
-            if (lyrics.length == 0) {
+            if (lyrics == null) {
                 btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
                 btn.classList.add('disabled');
                 btn.previousElementSibling.classList.add('badge', 'bg-danger');
@@ -81,7 +81,7 @@ downloadbtn.forEach((btn) => {
         const response = await get_lyrics(id);
         let lyrics = response[0];
         let sync = response[1];
-        if (lyrics.length == 0) {
+        if (lyrics == null) {
             btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
             btn.previousElementSibling.classList.add('badge');
             btn.previousElementSibling.textContent = 'No lyrics found';

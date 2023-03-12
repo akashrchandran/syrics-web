@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request
-from spotify import get_album, get_track, get_play, check_regex, query_spotify
+from flask import Flask, jsonify, render_template, request
+from spotify import get_album, get_all_trackids, get_track, get_play, check_regex, query_spotify
 
 app = Flask(__name__)
 
@@ -21,10 +21,19 @@ def download():
     else:
         return render_template("index.html", error="Invalid URL...Please check the URL and try again"), 400
 
-@app.route('/api')
+@app.route('/api/search')
 def api():
     q = request.args.get('q')
     return query_spotify(q) if q else "No arguments provided"
 
+@app.get('/api/getalltracks')
+def get_all_tracks():
+    album_id = request.args.get('id')
+    album = request.args.get('album')
+    if album and album_id:
+        return jsonify(get_all_trackids(album_id, album))
+    else:
+        return "No arguments provided", 400
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000)
+    app.run(host='0.0.0.0',port=5000, debug=True)

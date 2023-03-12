@@ -6,7 +6,7 @@
         <div class="row justify-content-md-center align-items-center">
             <div class="col w-50 text-center">
                 <img class="img-thumbnail rounded-5 m-2" alt="music cover pic" id="music_cover"
-                    src="{{ data['image'] }}" width="400" height="400" />
+                    src="{{ data['image'] }}" width="400" height="400" data-type="{{ types }}" data-id="{{ data['id'] }}"/>
             </div>
             <div class="col text-center text-md-start">
                 {% if types == 'album' %}
@@ -14,24 +14,75 @@
                     <h1 id="album_name">{{ data["name"] }}</h1>
                     <h2>{{ data['artist'] }}</h2>
                     <h4>{{ data['release_date'] }}</h4>
-                    <h4>{{ data['total_tracks'] }} Tracks</h4>
+                    <h4 id="total_tracks">{{ data['total_tracks'] }} Tracks</h4>
                     <h4>{{ data['label'] }}</h4>
                 </div>
-                <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
+                <button type="button" class="btn btn-success w-md-50" title="download lyrics" id="downzip"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
-
                 </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Zipping Files...</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="progress progress-lg">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
+                                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" id="progress">75%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Visit Github</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% elif types == 'playlist' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>
                     <small>{{ data["desc"] }}</small>
                     <h2>{{ data['owner'] }}</h2>
                     <h4>{{ data['followers'] }} followers</h4>
-                    <h4>{{ data['total_tracks'] }} Tracks</h4>
+                    <h4 id="total_tracks">{{ data['total_tracks'] }} Tracks</h4>
                 </div>
-                <button class="btn btn-success w-md-50" title="download lyrics" id="downzip">
+                <button type="button" class="btn btn-success w-md-50" title="download lyrics" id="downzip"
+                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
                 </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+                    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Zipping Files...</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="progress progress-lg">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
+                                        style="width: 75%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Visit Github</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {% elif types == 'track' %}
                 <div class="d-flex flex-column bd-highlight m-1">
                     <h1 id="album_name">{{ data["name"] }}</h1>

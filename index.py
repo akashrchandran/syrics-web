@@ -29,8 +29,8 @@ def api():
 @app.get('/api/getalltracks')
 def get_all_tracks():
     album_id = request.args.get('id')
-    album = request.args.get('album')
-    if album and album_id:
+    album = bool(request.args.get('album'))
+    if album_id:
         return jsonify(get_all_trackids(album_id, album))
     else:
         return "No arguments provided", 400

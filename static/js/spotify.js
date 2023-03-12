@@ -28,7 +28,7 @@ save_lyrics = (lyrics, name) => {
     window.saveAs(blob, name);
 }
 
-downzip.addEventListener('click', () => {
+noramlDownload = () => {
     const zip = new JSZip();
     const promises = [];
     let count = 0;
@@ -70,7 +70,59 @@ downzip.addEventListener('click', () => {
             downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
         }
     });
+}
+
+maxDownload = async (type, id) => {
+    const zip = new JSZip();
+    const promises = [];
+    downzip.innerHTML = `<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>`;
+    downzip.classList.add('disabled');
+    response = await fetch(`/api/getalltracks?id=${id}&album=${type == 'album' ? 'true' : ''}`);
+    const data = await response.json();
+    const length = data.length;
+    let progress = 0;
+    bar = document.getElementById('progress');
+    for (const trackid in data) {
+        bar.style.width = `${(progress / length) * 100}%`;
+        promises.push(get_lyrics(trackid).then(response => {
+            const lyrics = response[0]
+            if (lyrics != null) {
+                zip.file(`${trackid[1]} ${trackid[0]}.lrc`, lyrics.join(""));
+                progress++;
+            }
+        }));
+    };
+}
+Promise.all(promises).then(() => {
+    if (count != 0) {
+        zip.generateAsync({ type: "blob" }).then((content) => {
+            window.saveAs(content, `${album_name}.zip`);
+            setInterval(() => {
+                downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
+                downzip.classList.remove('disabled');
+            }, 2000);
+        })
+    }
+    else {
+        showToast('None of the tracks have lyrics');
+        downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
+    }
 });
+
+function downlodDecider() {
+    tracks = parseInt(document.getElementById('total_tracks').textContent.replace(" Tracks"));
+    data = document.getElementById('music_cover');
+    type = data.getAttribute('data-type');
+    id = data.getAttribute('data-id');
+    if (tracks > 100 && type == 'playlist') {
+        maxDownload('playlist', id);
+    } else if (tracks > 50 && type == 'album') {
+        maxDownload('album', id);
+    } else {
+        noramlDownload();
+    }
+}
+downzip.addEventListener('click', downlodDecider);
 
 downloadbtn.forEach((btn) => {
     btn.addEventListener('click', async () => {

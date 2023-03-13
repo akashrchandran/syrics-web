@@ -29,11 +29,11 @@ def api():
 @app.get('/api/getalltracks')
 def get_all_tracks():
     album_id = request.args.get('id')
-    album = request.args.get('album')
-    if album and album_id:
+    album = bool(request.args.get('album'))
+    if album_id:
         return jsonify(get_all_trackids(album_id, album))
     else:
         return "No arguments provided", 400
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000, debug=True)
+    app.run(host='0.0.0.0',port=5000)

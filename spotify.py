@@ -3,8 +3,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 cid = os.getenv("SPOTIFY_CLIENT_ID")
 secret = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -19,6 +19,7 @@ def get_album(album_id):
     album_data['artists'] = ','.join([artist['name'] for artist in album_data['artists']])
     return {
             "name": album_data['name'], 
+            "id": album_id,
             "artist": album_data['artists'], 
             "total_tracks": album_data['total_tracks'],
             "release_date": album_data['release_date'],
@@ -32,6 +33,7 @@ def get_track(track_id):
     track_data['artist'] = ','.join([artist['name'] for artist in track_data['artists']])
     return {
         "name": track_data['name'],
+        "id": track_id,
         "artist": track_data['artist'],
         "album": track_data['album']['name'],
         "image": track_data['album']['images'][0]['url'],
@@ -50,6 +52,7 @@ def get_play(play_id):
     play_data['collaborative'] = 'Collaborative' if play_data['collaborative'] else 'Not Collaborative'
     return {
         "name": play_data['name'],
+        "id": play_id,
         "owner": play_data['owner'],
         "total_tracks": play_data['total_tracks'],
         "desc": play_data['description'] or 'No Description',

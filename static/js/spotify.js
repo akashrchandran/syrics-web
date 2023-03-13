@@ -28,7 +28,7 @@ save_lyrics = (lyrics, name) => {
     window.saveAs(blob, name);
 }
 
-downzip.addEventListener('click', () => {
+noramlDownload = () => {
     const zip = new JSZip();
     const promises = [];
     let count = 0;
@@ -70,7 +70,61 @@ downzip.addEventListener('click', () => {
             downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
         }
     });
-});
+}
+
+maxDownload = async (type, id) => {
+    const zip = new JSZip();
+    downzip.innerHTML = `<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>`;
+    downzip.classList.add('disabled');
+    response = await fetch(`/api/getalltracks?id=${id}&album=${type == 'album' ? 'true' : ''}`);
+    const songs = await response.json();
+    const length = Object.keys(songs).length;
+    let progress = 0;
+    bar = document.getElementById('progress');
+    for (const trackid in songs) {
+        let variable = ((progress / length) * 100).toFixed(2);
+        bar.style.width = `${variable}%`;
+        bar.textContent = `${variable}%`;
+        res_lyric = await get_lyrics(trackid);
+        const lyrics = res_lyric[0];
+        if (lyrics != null) {
+            zip.file(`${songs[trackid][1]}. ${songs[trackid][0]}.lrc`, lyrics.join(""));
+            progress++;
+        }
+    };
+    if (progress != 0) {
+        document.getElementById('staticBackdropLabel').textContent = "Downloading..."
+        zip.generateAsync({ type: "blob" }).then((content) => {
+            window.saveAs(content, `${album_name}.zip`);
+            setInterval(() => {
+                downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
+                downzip.classList.remove('disabled');
+            }, 2000);
+        })
+        var myModalEl = document.getElementById('staticBackdrop');
+        var modal = bootstrap.Modal.getInstance(myModalEl)
+        modal.hide();
+    }
+    else {
+        showToast('None of the tracks have lyrics');
+        downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
+    }
+}
+
+function downlodDecider() {
+    tracks = parseInt(document.getElementById('total_tracks').textContent.replace(" Tracks"));
+    data = document.getElementById('music_cover');
+    type = data.getAttribute('data-type');
+    id = data.getAttribute('data-id');
+    if (tracks > 100 && type == 'playlist') {
+        maxDownload('playlist', id);
+    } else if (tracks > 50 && type == 'album') {
+        maxDownload('album', id);
+    } else {
+        noramlDownload();
+    }
+}
+downzip.addEventListener('click', downlodDecider);
 
 downloadbtn.forEach((btn) => {
     btn.addEventListener('click', async () => {

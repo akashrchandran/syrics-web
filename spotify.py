@@ -1,4 +1,5 @@
 import re
+import requests
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
@@ -12,6 +13,7 @@ client_credentials_manager = SpotifyClientCredentials(client_id=cid, client_secr
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 REGEX = r"^(?:spotify:(track|album|playlist):|https:\/\/[a-z]+\.spotify\.com\/(track|playlist|album)\/)(.\w+)?.*$"
+SHORT_URL_REGEX = r'window.top.location = validateProtocol\("(\S+)"\);'
 
 
 def get_album(album_id):
@@ -62,6 +64,12 @@ def get_play(play_id):
     }
 
 def check_regex(url):
+    url = requests.get(url, allow_redirects=True).url
+    if 'spotify.link' in url or 'spotify.app.link' in url:
+        req = requests.get(url, allow_redirects=True).text
+        match = re.search(SHORT_URL_REGEX, req)
+        if match:
+            url = match[1]
     match = re.match(REGEX, url)
     if not match:
         return None, None

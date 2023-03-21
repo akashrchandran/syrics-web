@@ -4,8 +4,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 cid = os.getenv("SPOTIFY_CLIENT_ID")
 secret = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -99,6 +99,8 @@ def get_all_trackids(_id, album=False):
         while True:
             results = sp.album_tracks(_id, offset=offset, limit=limit)
             for track in results['items']:
+                if not track['track']['id']:
+                    continue
                 tracks[track['id']] = [track['name'], track['track_number']]
             offset += limit
             if len(results['items']) < limit:
@@ -107,8 +109,11 @@ def get_all_trackids(_id, album=False):
         while True:
             results = sp.playlist_tracks(_id, offset=offset, limit=limit)
             for track in results['items']:
+                if not track['track']['id']:
+                    continue
                 tracks[track['track']['id']] = [track['track']['name'], track['track']['track_number']]
             offset += limit
             if len(results['items']) < limit:
                 break
+    print(tracks)
     return tracks

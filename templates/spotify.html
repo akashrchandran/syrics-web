@@ -6,7 +6,8 @@
         <div class="row justify-content-md-center align-items-center">
             <div class="col w-50 text-center">
                 <img class="img-thumbnail rounded-5 m-2" alt="music cover pic" id="music_cover"
-                    src="{{ data['image'] }}" width="400" height="400" data-type="{{ types }}" data-id="{{ data['id'] }}"/>
+                    src="{{ data['image'] }}" width="400" height="400" data-type="{{ types }}"
+                    data-id="{{ data['id'] }}" />
             </div>
             <div class="col text-center text-md-start">
                 {% if types == 'album' %}
@@ -34,14 +35,17 @@
                             </div>
                             <div class="modal-body">
                                 <div class="progress progress-lg">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
-                                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" id="progress">75%
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                        role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"
+                                        id="progress">0%
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Visit Github</button>
+                                <a href="https://github.com/akashrchandran/syrics-web" target="_blank" rel="noopener noreferrer">
+                                    <button type="button" class="btn btn-primary">Visit Github</button>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -71,14 +75,17 @@
                             </div>
                             <div class="modal-body">
                                 <div class="progress progress-lg">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
-                                        style="width: 0%;" aria-valuemin="0" aria-valuemax="100" id="progress">0%
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                                        role="progressbar" style="width: 0%;" aria-valuemin="0" aria-valuemax="100"
+                                        id="progress">0%
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Visit Github</button>
+                                <a href="https://github.com/akashrchandran/syrics-web" target="_blank" rel="noopener noreferrer">
+                                    <button type="button" class="btn btn-primary">Visit Github</button>
+                                </a>
                             </div>
                         </div>
                     </div>

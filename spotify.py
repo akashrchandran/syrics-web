@@ -72,7 +72,15 @@ def check_regex(url):
             url = match[1]
     match = re.match(REGEX, url)
     if not match:
-        return None, None
+        payload = {
+            "url": url,
+            "country": "IN"
+        }
+        req = requests.post("https://songwhip.com/api/songwhip/create", json=payload)
+        if req.status_code != 200:
+            return None, None
+        link = req.json()['data']['item']['links']['spotify'][0]['link']
+        match = re.match(REGEX, link)
     if match[2]:
         return match[2], match[3]
     elif match[1]:

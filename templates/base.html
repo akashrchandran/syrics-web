@@ -7,10 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A web app to download synced spotify lyrics directly from your browser.">
     <meta property="og:title" content="Syrics | WEB" />
-	<meta property="og:description" content="A web app to download synced spotify lyrics directly from your browser." />
-	<meta property="og:image" content="{{ url_for('static', filename='img/syrics.png') }}" />
-	<meta property="og:url" content="https://syrics-web-akashrchandran.vercel.app/" />
+    <meta property="og:description" content="A web app to download synced spotify lyrics directly from your browser." />
+    <meta property="og:image" content="{{ url_for('static', filename='img/syrics.png') }}" />
+    <meta property="og:url" content="https://syrics-web-akashrchandran.vercel.app/" />
     <title>Syrics | WEB</title>
+    <meta name="theme-color" content="#30E368" />
     <link rel="icon" href="{{ url_for('static', filename='img/syrics96.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
@@ -18,9 +19,35 @@
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/github-corner-element"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2020PETHYR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2020PETHYR');
+    </script>
 </head>
 
 <body>
+    <github-corner banner-color="url(#banner-grad)" octocat-color="url(#octocat-grad)"
+        href="https://github.com/akashrchandran/syrics-web">
+        <svg slot="svg">
+            <defs>
+                <radialGradient id="banner-grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:rgb(212, 231, 216);
+        stop-opacity:0" />
+                    <stop offset="100%" style="stop-color:rgb(121, 203, 184);stop-opacity:1" />
+                </radialGradient>
+                <linearGradient id="octocat-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:rgb(255,255,0);stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:rgb(255,0,0);stop-opacity:1" />
+                </linearGradient>
+            </defs>
+        </svg>
+    </github-corner>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header  text-bg-danger">

@@ -28,3 +28,13 @@ body {
 	width: 500px;
 	margin-top: 100px;
 }
+
+footer {
+	position: fixed;
+	margin-bottom: 10px;
+}
+
+footer a {
+	text-decoration: none;
+	color: #30E368;
+}

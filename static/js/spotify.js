@@ -137,7 +137,7 @@ downloadbtn.forEach((btn) => {
         let sync = response[1];
         if (lyrics == null) {
             btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
-            btn.previousElementSibling.classList.add('badge');
+            btn.previousElementSibling.classList.add('badge', 'bg-danger');
             btn.previousElementSibling.textContent = 'No lyrics found';
             return;
         }

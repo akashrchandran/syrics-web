@@ -34,6 +34,7 @@ noramlDownload = () => {
     let count = 0;
     downzip.innerHTML = `<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>`;
     downzip.classList.add('disabled');
+    let bar = document.getElementById('progress');
     downloadbtn.forEach((btn) => {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
@@ -53,6 +54,10 @@ noramlDownload = () => {
             }
             zip.file(`${name}.lrc`, lyrics.join(""));
             count++;
+            let variable = ((count / downloadbtn.length) * 100).toFixed(2);
+            bar.style.width = `${variable}%`;
+            bar.textContent = `${variable}%`;
+            console.log(variable);
         }));
     });
     Promise.all(promises).then(() => {
@@ -60,7 +65,7 @@ noramlDownload = () => {
             zip.generateAsync({ type: "blob" }).then((content) => {
                 window.saveAs(content, `${album_name}.zip`);
                 setInterval(() => {
-                    downzip.innerHTML = '<span class="fs-4"><i class="fa fa-check" aria-hidden="true"></i> ZIP</span>';
+                    downzip.innerHTML = '<span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>';
                     downzip.classList.remove('disabled');
                 }, 2000);
             })
@@ -69,6 +74,9 @@ noramlDownload = () => {
             showToast('None of the tracks have lyrics');
             downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
         }
+        let myModalEl = document.getElementById('staticBackdrop');
+        let modal = bootstrap.Modal.getInstance(myModalEl)
+        modal.hide();
     });
 }
 
@@ -78,7 +86,7 @@ maxDownload = async (type, id) => {
     downzip.classList.add('disabled');
     response = await fetch(`/api/getalltracks?id=${id}&album=${type == 'album' ? 'true' : ''}`);
     const songs = await response.json();
-    const {length} = Object.keys(songs);
+    const { length } = Object.keys(songs);
     let progress = 0;
     bar = document.getElementById('progress');
     for (const trackid in songs) {
@@ -101,14 +109,15 @@ maxDownload = async (type, id) => {
                 downzip.classList.remove('disabled');
             }, 2000);
         })
-        let myModalEl = document.getElementById('staticBackdrop');
-        let modal = bootstrap.Modal.getInstance(myModalEl)
-        modal.hide();
+
     }
     else {
         showToast('None of the tracks have lyrics');
         downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
     }
+    let myModalEl = document.getElementById('staticBackdrop');
+    let modal = bootstrap.Modal.getInstance(myModalEl)
+    modal.hide();
 }
 
 function downlodDecider() {

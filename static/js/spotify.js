@@ -78,7 +78,7 @@ maxDownload = async (type, id) => {
     downzip.classList.add('disabled');
     response = await fetch(`/api/getalltracks?id=${id}&album=${type == 'album' ? 'true' : ''}`);
     const songs = await response.json();
-    const length = Object.keys(songs).length;
+    const {length} = Object.keys(songs);
     let progress = 0;
     bar = document.getElementById('progress');
     for (const trackid in songs) {
@@ -101,8 +101,8 @@ maxDownload = async (type, id) => {
                 downzip.classList.remove('disabled');
             }, 2000);
         })
-        var myModalEl = document.getElementById('staticBackdrop');
-        var modal = bootstrap.Modal.getInstance(myModalEl)
+        let myModalEl = document.getElementById('staticBackdrop');
+        let modal = bootstrap.Modal.getInstance(myModalEl)
         modal.hide();
     }
     else {

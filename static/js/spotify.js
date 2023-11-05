@@ -28,7 +28,7 @@ save_lyrics = (lyrics, name) => {
     window.saveAs(blob, name);
 }
 
-noramlDownload = () => {
+noramlDownload = async () => {
     const zip = new JSZip();
     const promises = [];
     let count = 0;
@@ -60,24 +60,25 @@ noramlDownload = () => {
             console.log(variable);
         }));
     });
-    Promise.all(promises).then(() => {
-        if (count != 0) {
-            zip.generateAsync({ type: "blob" }).then((content) => {
-                window.saveAs(content, `${album_name}.zip`);
-                setInterval(() => {
-                    downzip.innerHTML = '<span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>';
-                    downzip.classList.remove('disabled');
-                }, 2000);
-            })
+    try {
+        await Promise.all(promises);
+        
+        if (count !== 0) {
+          const content = await zip.generateAsync({ type: "blob" });
+          window.saveAs(content, `${album_name}.zip`);
+          downzip.innerHTML = '<span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>';
+          downzip.classList.remove('disabled');
+        } else {
+          showToast('None of the tracks have lyrics');
+          downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
         }
-        else {
-            showToast('None of the tracks have lyrics');
-            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
-        }
+      } catch (error) {
+        console.error(error);
+      } finally {
         let myModalEl = document.getElementById('staticBackdrop');
-        let modal = bootstrap.Modal.getInstance(myModalEl)
+        let modal = bootstrap.Modal.getInstance(myModalEl);
         modal.hide();
-    });
+      }
 }
 
 maxDownload = async (type, id) => {
@@ -90,7 +91,7 @@ maxDownload = async (type, id) => {
     let progress = 0;
     bar = document.getElementById('progress');
     for (const trackid in songs) {
-        let variable = ((progress / length) * 100).toFixed(2);
+        let variable = parseInt((progress / length) * 100);
         bar.style.width = `${variable}%`;
         bar.textContent = `${variable}%`;
         res_lyric = await get_lyrics(trackid);

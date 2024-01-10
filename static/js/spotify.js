@@ -25,8 +25,10 @@ async function get_lyrics(id) {
 
 save_lyrics = (lyrics, name) => {
     const blob = new Blob(lyrics, { type: "text/plain;charset=utf-8" });
-    window.saveAs(blob, name);
+    window.saveAs(blob, sanitizeFilename(name));
 }
+
+sanitizeFilename = (filename) => filename.replace(/[\/\\:*?"<>|]/g, '_');
 
 noramlDownload = async () => {
     const zip = new JSZip();
@@ -52,7 +54,7 @@ noramlDownload = async () => {
                 btn.previousElementSibling.classList.add('badge', 'bg-warning');
                 btn.previousElementSibling.textContent = 'Synced lyrics not available';
             }
-            zip.file(`${name}.lrc`, lyrics.join(""));
+            zip.file(`${sanitizeFilename(name)}.lrc`, lyrics.join(""));
             count++;
             let variable = ((count / downloadbtn.length) * 100).toFixed(2);
             bar.style.width = `${variable}%`;
@@ -97,7 +99,7 @@ maxDownload = async (type, id) => {
         res_lyric = await get_lyrics(trackid);
         const lyrics = res_lyric[0];
         if (lyrics != null) {
-            zip.file(`${songs[trackid][1]}. ${songs[trackid][0]}.lrc`, lyrics.join(""));
+            zip.file(`${songs[trackid][1]}. ${sanitizeFilename(songs[trackid][0])}.lrc`, lyrics.join(""));
             progress++;
         }
     };
@@ -126,13 +128,12 @@ function downlodDecider() {
     data = document.getElementById('music_cover');
     type = data.getAttribute('data-type');
     id = data.getAttribute('data-id');
-    if (tracks > 100 && type == 'playlist') {
+    if (tracks > 100 && type == 'playlist')
         maxDownload('playlist', id);
-    } else if (tracks > 50 && type == 'album') {
+    else if (tracks > 50 && type == 'album')
         maxDownload('album', id);
-    } else {
+    else
         noramlDownload();
-    }
 }
 downzip.addEventListener('click', downlodDecider);
 

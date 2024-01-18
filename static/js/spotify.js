@@ -3,7 +3,7 @@ const downzip = document.getElementById('downzip');
 const album_name = document.getElementById('album_name').textContent;
 
 async function get_lyrics(id) {
-    const response = await fetch(`https://spotify-lyric-api-984e7b4face0.herokuapp.com/?trackid=${id}&format=lrc`);
+    const response = await fetch(`https://spotify-lyrics-api-pi.vercel.app/?trackid=${id}&format=lrc`);
     if (response.status != 200) {
         return [null, null];
     }

@@ -108,9 +108,15 @@ def get_all_trackids(_id, album=False):
         while True:
             results = sp.album_tracks(_id, offset=offset, limit=limit)
             for track in results['items']:
-                if not track['track']['id']:
+                if not track['id']:
                     continue
-                tracks[track['id']] = [track['name'], track['track_number']]
+                track['artist'] = ','.join([artist['name'] for artist in track['artists']])
+                tracks[track['id']] = {
+                    "name": track['name'],
+                    "track_number": track['track_number'],
+                    "artist": track['artist'],
+                    "duration": format_duration(track['duration_ms']),
+                }
             offset += limit
             if len(results['items']) < limit:
                 break
@@ -120,7 +126,14 @@ def get_all_trackids(_id, album=False):
             for track in results['items']:
                 if not track['track']['id']:
                     continue
-                tracks[track['track']['id']] = [track['track']['name'], track['track']['track_number']]
+                track['track']['artist'] = ','.join([artist['name'] for artist in track['track']['artists']])
+                tracks[track['track']['id']] = {
+                    "name": track['track']['name'],
+                    "track_number": track['track']['track_number'],
+                    "artist": track['track']['artist'],
+                    "album": track['track']['album']['name'],
+                    "duration": format_duration(track['track']['duration_ms']),
+                }
             offset += limit
             if len(results['items']) < limit:
                 break

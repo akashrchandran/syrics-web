@@ -101,11 +101,12 @@ maxDownload = async (type, id) => {
         res_lyric = await get_lyrics(trackid);
         const lyrics = res_lyric[0];
         if (lyrics != null) {
-            zip.file(`${songs[trackid][1]}. ${sanitizeFilename(songs[trackid][0])}.lrc`, lyrics.join(""));
-            progress++;
+            lyrics.unshift(`[ar:${songs[trackid]["artist"]}]\n[al:${album_name}]\n[ti:${songs[trackid]['name']}]\n[length:${songs[trackid]['duration']}]\n\n`);
+            zip.file(`${songs[trackid]["track_number"]}. ${sanitizeFilename(songs[trackid]["name"])}.lrc`, lyrics.join(""));
         }
+        progress++;
     };
-    if (progress != 0) {
+    if (Object.keys(zip.files).length > 0) {
         document.getElementById('staticBackdropLabel').textContent = "Downloading..."
         zip.generateAsync({ type: "blob" }).then((content) => {
             window.saveAs(content, `${album_name}.zip`);
@@ -114,7 +115,6 @@ maxDownload = async (type, id) => {
                 downzip.classList.remove('disabled');
             }, 2000);
         })
-
     }
     else {
         showToast('None of the tracks have lyrics');

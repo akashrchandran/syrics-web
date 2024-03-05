@@ -4,8 +4,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import os
 
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 cid = os.getenv("SPOTIFY_CLIENT_ID")
 secret = os.getenv("SPOTIFY_CLIENT_SECRET")
@@ -43,6 +43,7 @@ def get_track(track_id):
         "release_date": track_data['album']['release_date'],
         'popularity': track_data['popularity'],
         'track_number': track_data['track_number'],
+        "duration": format_duration(track_data['duration_ms']),
         'id': track_data['id'],
     }
 
@@ -123,5 +124,10 @@ def get_all_trackids(_id, album=False):
             offset += limit
             if len(results['items']) < limit:
                 break
-    print(tracks)
     return tracks
+
+def format_duration(duration_ms):
+    minutes = duration_ms // 60000
+    seconds = (duration_ms % 60000) // 1000
+    hundredths = (duration_ms % 1000) // 10
+    return f"{minutes:02d}:{seconds:02d}.{hundredths:02d}"

@@ -39,8 +39,9 @@ noramlDownload = async () => {
     let bar = document.getElementById('progress');
     downloadbtn.forEach((btn) => {
         const id = btn.getAttribute('data-id');
-        const name = btn.getAttribute('data-name');
         promises.push(get_lyrics(id).then(response => {
+            const attributes = ['data-name', 'data-album', 'data-artist', 'data-title', 'data-length'];
+            const [name, album, artist, title, length] = attributes.map(attr => btn.getAttribute(attr));
             const lyrics = response[0]
             const sync = response[1]
             if (lyrics == null) {
@@ -54,6 +55,7 @@ noramlDownload = async () => {
                 btn.previousElementSibling.classList.add('badge', 'bg-warning');
                 btn.previousElementSibling.textContent = 'Synced lyrics not available';
             }
+            lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
             zip.file(`${sanitizeFilename(name)}.lrc`, lyrics.join(""));
             count++;
             let variable = ((count / downloadbtn.length) * 100).toFixed(2);
@@ -99,11 +101,12 @@ maxDownload = async (type, id) => {
         res_lyric = await get_lyrics(trackid);
         const lyrics = res_lyric[0];
         if (lyrics != null) {
-            zip.file(`${songs[trackid][1]}. ${sanitizeFilename(songs[trackid][0])}.lrc`, lyrics.join(""));
-            progress++;
+            lyrics.unshift(`[ar:${songs[trackid]["artist"]}]\n[al:${album_name}]\n[ti:${songs[trackid]['name']}]\n[length:${songs[trackid]['duration']}]\n\n`);
+            zip.file(`${songs[trackid]["track_number"]}. ${sanitizeFilename(songs[trackid]["name"])}.lrc`, lyrics.join(""));
         }
+        progress++;
     };
-    if (progress != 0) {
+    if (Object.keys(zip.files).length > 0) {
         document.getElementById('staticBackdropLabel').textContent = "Downloading..."
         zip.generateAsync({ type: "blob" }).then((content) => {
             window.saveAs(content, `${album_name}.zip`);
@@ -112,7 +115,6 @@ maxDownload = async (type, id) => {
                 downzip.classList.remove('disabled');
             }, 2000);
         })
-
     }
     else {
         showToast('None of the tracks have lyrics');
@@ -141,10 +143,12 @@ downloadbtn.forEach((btn) => {
     btn.addEventListener('click', async () => {
         btn.innerHTML = '<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>';
         btn.classList.add('disabled');
-        const id = btn.getAttribute('data-id');
-        const name = btn.getAttribute('data-name');
+        const attributes = ['data-id', 'data-name', 'data-album', 'data-artist', 'data-title', 'data-length'];
+        const [id, name, album, artist, title, length] = attributes.map(attr => btn.getAttribute(attr));
+
         const response = await get_lyrics(id);
         let lyrics = response[0];
+        lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
         let sync = response[1];
         if (lyrics == null) {
             btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';

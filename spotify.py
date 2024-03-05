@@ -43,6 +43,7 @@ def get_track(track_id):
         "release_date": track_data['album']['release_date'],
         'popularity': track_data['popularity'],
         'track_number': track_data['track_number'],
+        "duration": format_duration(track_data['duration_ms']),
         'id': track_data['id'],
     }
 
@@ -107,9 +108,15 @@ def get_all_trackids(_id, album=False):
         while True:
             results = sp.album_tracks(_id, offset=offset, limit=limit)
             for track in results['items']:
-                if not track['track']['id']:
+                if not track['id']:
                     continue
-                tracks[track['id']] = [track['name'], track['track_number']]
+                track['artist'] = ','.join([artist['name'] for artist in track['artists']])
+                tracks[track['id']] = {
+                    "name": track['name'],
+                    "track_number": track['track_number'],
+                    "artist": track['artist'],
+                    "duration": format_duration(track['duration_ms']),
+                }
             offset += limit
             if len(results['items']) < limit:
                 break
@@ -119,9 +126,21 @@ def get_all_trackids(_id, album=False):
             for track in results['items']:
                 if not track['track']['id']:
                     continue
-                tracks[track['track']['id']] = [track['track']['name'], track['track']['track_number']]
+                track['track']['artist'] = ','.join([artist['name'] for artist in track['track']['artists']])
+                tracks[track['track']['id']] = {
+                    "name": track['track']['name'],
+                    "track_number": track['track']['track_number'],
+                    "artist": track['track']['artist'],
+                    "album": track['track']['album']['name'],
+                    "duration": format_duration(track['track']['duration_ms']),
+                }
             offset += limit
             if len(results['items']) < limit:
                 break
-    print(tracks)
     return tracks
+
+def format_duration(duration_ms):
+    minutes = duration_ms // 60000
+    seconds = (duration_ms % 60000) // 1000
+    hundredths = (duration_ms % 1000) // 10
+    return f"{minutes:02d}:{seconds:02d}.{hundredths:02d}"

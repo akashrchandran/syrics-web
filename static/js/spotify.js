@@ -148,7 +148,6 @@ downloadbtn.forEach((btn) => {
 
         const response = await get_lyrics(id);
         let lyrics = response[0];
-        lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
         let sync = response[1];
         if (lyrics == null) {
             btn.innerHTML = '<i class="fa fa-times" aria-hidden="true"></i>';
@@ -160,6 +159,7 @@ downloadbtn.forEach((btn) => {
             btn.previousElementSibling.classList.add('badge', 'bg-warning');
             btn.previousElementSibling.textContent = 'Synced lyrics not available';
         }
+        lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
         save_lyrics(lyrics, `${name}.lrc`);
         btn.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i>';
         setInterval(() => {

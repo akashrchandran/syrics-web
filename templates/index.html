@@ -16,14 +16,49 @@
     </div>
 </div>
 <footer class="fixed-bottom text-center text-white">
-made with 💖 by <a href="http://akashrchandran.in" target="_blank" rel="noopener noreferrer">akashrchandran</a>.
+    made with 💖 by <a href="http://akashrchandran.in" target="_blank" rel="noopener noreferrer">akashrchandran</a>.
 </footer>
-    {% endblock %}
+<div class="settings-icon" data-bs-toggle="modal" data-bs-target="#settingsModal">
+    <i class="fa fa-cog" aria-hidden="true"></i>
+</div>
+<div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="settingsModalLabel">Lyrics Settings</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="settingsForm">
+                    <div class="mb-4">
+                        <label for="lyricsType" class="form-label">Choose Lyrics Type</label>
+                        <select class="form-select" id="lyricsType" name="lyricsType" required>
+                            <option value="">Select a type</option>
+                            <option value="lrc">LRC (Synchronized Lyrics)</option>
+                            <option value="srt">SRT (SubRip Subtitle)</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="fileNameFormat" class="form-label">Lyrics File Name Format</label>
+                        <input class="form-control" type="text" id="fileNameFormat" name="fileNameFormat" placeholder="Type or select options" aria-label="File name format input" pattern="^[a-zA-Z0-9_\-\.]+$">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveSettings">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
-    {% block javascript %}
-    {% if error %}
-    <script>
-        showToast("{{ error }}", "error");
-    </script>
-    {% endif %}
-    {% endblock %}
+{% endblock %}
+
+{% block javascript %}
+{% if error %}
+<script>
+    showToast("{{ error }}", "error");
+</script>
+{% endif %}
+{% endblock %}

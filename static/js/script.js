@@ -39,7 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('lyricsType').value = savedSettings.lyricsType;
         tagify.addTags(savedSettings.fileNameFormat);
     } else {
-        // Set default tags
+        const defaultSettings = {
+            lyricsType: 'lrc',
+            fileNameFormat: ["track_name", "track_no", "album"]
+        };
+        localStorage.setItem('lyricsSettings', JSON.stringify(defaultSettings));
+        document.getElementById('lyricsType').value = defaultSettings.lyricsType;
+        tagify.addTags(defaultSettings.fileNameFormat);
         tagify.addTags([{ value: "track_name" }, { value: "track_no" }, { value: "album" }]);
     }
 

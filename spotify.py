@@ -78,6 +78,7 @@ def check_regex(url):
             "country": "IN"
         }
         req = requests.post("https://songwhip.com/api/songwhip/create", json=payload)
+        print(req.json())
         if req.status_code != 200:
             return None, None
         link = req.json()['data']['item']['links']['spotify'][0]['link']

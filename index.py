@@ -51,6 +51,16 @@ def get_all_tracks():
         return jsonify(get_all_trackids(album_id, album))
     else:
         return "No arguments provided", 400
+    
+@app.get("/api/tracks/<string:track_id>")
+def track_details(track_id: str):
+    if track_id:
+        try:
+            return jsonify(get_track(track_id))
+        except Exception as e:
+            return "Invalid Track ID", 400
+    else:
+        return "No arguments provided", 400
 
 app.add_template_filter(format_duration)
 if __name__ == "__main__":

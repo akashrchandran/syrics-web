@@ -1,9 +1,11 @@
 const downloadbtn = document.getElementsByName('download');
 const downzip = document.getElementById('downzip');
 const album_name = document.getElementById('album_name').textContent;
+const lyricsSettings = JSON.parse(localStorage.getItem('lyricsSettings'));
+const lyricsType = lyricsSettings ? lyricsSettings.lyricsType : 'lrc';
 
-async function get_lyrics(id) {
-    const response = await fetch(`https://spotify-lyrics-api-pi.vercel.app/?trackid=${id}&format=lrc`);
+async function get_lyrics(id, lyricsType) {
+    const response = await fetch(`https://spotify-lyrics-api-pi.vercel.app/?trackid=${id}&format=${lyricsType}`);
     if (response.status != 200) {
         return [null, null];
     }
@@ -16,16 +18,22 @@ async function get_lyrics(id) {
         });
         sync = false;
     } else {
-        data.lines.forEach(line => {
-            lyrics.push(`[${line['timeTag']}] ${line['words']}\n`);
-        });
+        if (lyricsType === 'srt') {
+            data.lines.forEach((line) => {
+                lyrics.push(`${line["index"]}\n${line["startTime"]} --> ${line["endTime"]}\n${line["words"]}\n\n`);
+            });
+        } else {
+            data.lines.forEach(line => {
+                lyrics.push(`[${line['timeTag']}] ${line['words']}\n`);
+            });
+        }
     }
     return [lyrics, sync];
 }
 
-save_lyrics = (lyrics, name) => {
+save_lyrics = (lyrics, name, type) => {
     const blob = new Blob(lyrics, { type: "text/plain;charset=utf-8" });
-    window.saveAs(blob, sanitizeFilename(name));
+    window.saveAs(blob, sanitizeFilename(name + '.' + type));
 }
 
 sanitizeFilename = (filename) => filename.replace(/[\/\\:*?"<>|]/g, '_');
@@ -56,7 +64,11 @@ noramlDownload = async () => {
                 btn.previousElementSibling.textContent = 'Synced lyrics not available';
             }
             lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
-            zip.file(`${sanitizeFilename(name)}.lrc`, lyrics.join(""));
+            if (lyricsType === 'lrc') {
+                zip.file(`${sanitizeFilename(name)}.lrc`, lyrics.join(""));
+            } else if (lyricsType === 'srt') {
+                zip.file(`${sanitizeFilename(name)}.srt`, lyrics.join(""));
+            }
             count++;
             let variable = ((count / downloadbtn.length) * 100).toFixed(2);
             bar.style.width = `${variable}%`;
@@ -66,23 +78,23 @@ noramlDownload = async () => {
     });
     try {
         await Promise.all(promises);
-        
+
         if (count !== 0) {
-          const content = await zip.generateAsync({ type: "blob" });
-          window.saveAs(content, `${album_name}.zip`);
-          downzip.innerHTML = '<span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>';
-          downzip.classList.remove('disabled');
+            const content = await zip.generateAsync({ type: "blob" });
+            window.saveAs(content, `${album_name}.zip`);
+            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>';
+            downzip.classList.remove('disabled');
         } else {
-          showToast('None of the tracks have lyrics');
-          downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
+            showToast('None of the tracks have lyrics');
+            downzip.innerHTML = '<span class="fs-4"><i class="fa fa-times" aria-hidden="true"></i> ZIP</span>';
         }
-      } catch (error) {
+    } catch (error) {
         console.error(error);
-      } finally {
+    } finally {
         let myModalEl = document.getElementById('staticBackdrop');
         let modal = bootstrap.Modal.getInstance(myModalEl);
         modal.hide();
-      }
+    }
 }
 
 maxDownload = async (type, id) => {
@@ -98,11 +110,15 @@ maxDownload = async (type, id) => {
         let variable = parseInt((progress / length) * 100);
         bar.style.width = `${variable}%`;
         bar.textContent = `${variable}%`;
-        res_lyric = await get_lyrics(trackid);
+        res_lyric = await get_lyrics(trackid, lyricsType);
         const lyrics = res_lyric[0];
         if (lyrics != null) {
-            lyrics.unshift(`[ar:${songs[trackid]["artist"]}]\n[al:${album_name}]\n[ti:${songs[trackid]['name']}]\n[length:${songs[trackid]['duration']}]\n\n`);
-            zip.file(`${songs[trackid]["track_number"]}. ${sanitizeFilename(songs[trackid]["name"])}.lrc`, lyrics.join(""));
+            if (lyricsType === 'lrc') {
+                lyrics.unshift(`[ar:${songs[trackid]["artist"]}]\n[al:${album_name}]\n[ti:${songs[trackid]['name']}]\n[length:${songs[trackid]['duration']}]\n\n`);
+                zip.file(`${songs[trackid]["track_number"]}. ${sanitizeFilename(songs[trackid]["name"])}.lrc`, lyrics.join(""));
+            } else if (lyricsType === 'srt') {
+                zip.file(`${songs[trackid]["track_number"]}. ${sanitizeFilename(songs[trackid]["name"])}.srt`, lyrics.join(""));
+            }
         }
         progress++;
     };
@@ -146,7 +162,7 @@ downloadbtn.forEach((btn) => {
         const attributes = ['data-id', 'data-name', 'data-album', 'data-artist', 'data-title', 'data-length'];
         const [id, name, album, artist, title, length] = attributes.map(attr => btn.getAttribute(attr));
 
-        const response = await get_lyrics(id);
+        const response = await get_lyrics(id, lyricsType); 
         let lyrics = response[0];
         let sync = response[1];
         if (lyrics == null) {
@@ -159,8 +175,12 @@ downloadbtn.forEach((btn) => {
             btn.previousElementSibling.classList.add('badge', 'bg-warning');
             btn.previousElementSibling.textContent = 'Synced lyrics not available';
         }
-        lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
-        save_lyrics(lyrics, `${name}.lrc`);
+        if (lyricsType === 'lrc') {
+            lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
+            save_lyrics(lyrics, `${name}`, 'lrc');
+        } else if (lyricsType === 'srt') {
+            save_lyrics(lyrics, `${name}`, 'srt');
+        }
         btn.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i>';
         setInterval(() => {
             btn.innerHTML = '<i class="fa fa-download" aria-hidden="true"></i>';

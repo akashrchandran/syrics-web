@@ -1,55 +1,58 @@
-const toastmessage = document.getElementById('liveToast')
-const toastbody = document.getElementsByClassName('toast-body')
+const toastmessage = document.getElementById('liveToast');
+const toastbody = document.getElementsByClassName('toast-body');
+let savedSettings = JSON.parse(localStorage.getItem('lyricsSettings'));
+
+const defaultSettings = {
+    lyricsType: 'lrc',
+    fileNameFormat: ["{track_number}", ". ", "{track_name}"]
+};
+
+if (!savedSettings) {
+    localStorage.setItem('lyricsSettings', JSON.stringify(defaultSettings));
+    tagify.addTags(defaultSettings.fileNameFormat);
+    savedSettings = defaultSettings;
+}
+
 showToast = (msg) => {
     const toast = new bootstrap.Toast(toastmessage)
     toastbody[0].textContent = msg;
     toast.show()
 }
 document.addEventListener('DOMContentLoaded', function () {
-    const settingsForm = document.getElementById('settingsForm');
     const saveSettingsBtn = document.getElementById('saveSettings');
     const settingsModal = new bootstrap.Modal(document.getElementById('settingsModal'));
     const fileNameFormat = document.getElementById('fileNameFormat');
 
     const tagify = new Tagify(fileNameFormat, {
-        whitelist: ["track_name", "track_no", "album"],
+        whitelist: ["{track_name}", "{track_number}", "{track_album}", "{track_id}", "{track_artist}", "{track_explicit}", "{track_release_date}", "{track_popularity}", "{track_duration}"],
         dropdown: {
             enabled: 0,
-            maxItems: 20,
+            maxItems: 10,
             classname: "tags-look",
+            fuzzySearch: false,
             closeOnSelect: false
         },
-        pattern: /^[a-zA-Z0-9_\-\.]+$/
+        pattern: "^[a-zA-Z0-9_\-\.{} ]+$",
+        trim: false
     });
     var dragsort = new DragSort(tagify.DOM.scope, {
-        selector: '.'+tagify.settings.classNames.tag,
+        selector: '.' + tagify.settings.classNames.tag,
         callbacks: {
             dragEnd: onDragEnd
         }
     })
-    
+
     // must update Tagify's value according to the re-ordered nodes in the DOM
-    function onDragEnd(elm){
+    function onDragEnd(elm) {
         tagify.updateValueByDOMTags()
     }
 
     // Load settings from local storage
-    const savedSettings = JSON.parse(localStorage.getItem('lyricsSettings'));
-    if (savedSettings) {
-        document.getElementById('lyricsType').value = savedSettings.lyricsType;
-        tagify.addTags(savedSettings.fileNameFormat);
-    } else {
-        const defaultSettings = {
-            lyricsType: 'lrc',
-            fileNameFormat: ["track_name", "track_no", "album"]
-        };
-        localStorage.setItem('lyricsSettings', JSON.stringify(defaultSettings));
-        document.getElementById('lyricsType').value = defaultSettings.lyricsType;
-        tagify.addTags(defaultSettings.fileNameFormat);
-        tagify.addTags([{ value: "track_name" }, { value: "track_no" }, { value: "album" }]);
-    }
+    document.getElementById('lyricsType').value = savedSettings.lyricsType;
+    tagify.addTags(savedSettings.fileNameFormat);
 
     saveSettingsBtn.addEventListener('click', function () {
+        const settingsForm = document.getElementById('settingsForm');
         const formData = new FormData(settingsForm);
         const lyricsType = formData.get('lyricsType');
 

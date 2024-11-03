@@ -92,11 +92,11 @@
                 </div>
                 {% elif types == 'track' %}
                 <div class="d-flex flex-column bd-highlight m-1">
-                    <h1 id="album_name">{{ data["name"] }}</h1>
-                    <h2>{{ data['artist'] }}</h2>
-                    <h4>{{ data['release_date'] }}</h4>
-                    <h4>{{ data['explicit'] }} track</h4>
-                    <h4>{{ data['popularity'] }} popularity</h4>
+                    <h1 id="album_name">{{ data["track_name"] }}</h1>
+                    <h2>{{ data['track_artist'] }}</h2>
+                    <h4>{{ data['track_release_date'] }}</h4>
+                    <h4>{{ data['track_explicit'] }} track</h4>
+                    <h4>{{ data['track_popularity'] }} popularity</h4>
                 </div>
                 <button class="btn btn-success w-md-50 invisible" title="download lyrics" id="downzip">
                     <span class="fs-4"><i class="fa fa-download" aria-hidden="true"></i> ZIP</span>
@@ -143,13 +143,13 @@
             {% elif types == 'track' %}
             <li class="list-group-item">
                 <i class="fa fa-play-circle mx-2"></i>
-                <span class="fs-5 m-0">{{ data['track_number']}}. {{ data['name'] }}</span>
+                <span class="fs-5 m-0">{{ data['track_number']}}. {{ data['track_name'] }}</span>
                 <span class="bg-danger text-wrap mx-3"></span>
                 <button type="button" class="btn btn-success float-end" title="download lyrics" name="download"
-                    data-id="{{ data['id'] }}" data-name="{{ data['track_number']}}. {{ data['name'] }}"
-                    data-artist="{{ data['artist'] }}"
-                    data-album="{{ data['album'] }}" data-title="{{ data['name'] }}"
-                    data-length="{{ data['duration'] }}">
+                    data-id="{{ data['track_id'] }}" data-name="{{ data['track_number']}}. {{ data['track_name'] }}"
+                    data-artist="{{ data['track_artist'] }}"
+                    data-album="{{ data['track_album'] }}" data-title="{{ data['track_name'] }}"
+                    data-length="{{ data['track_duration'] }}">
                     <i class="fa fa-download" aria-hidden="true"></i>
                 </button>
             </li>

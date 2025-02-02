@@ -5,7 +5,7 @@ const lyricsSettings = JSON.parse(localStorage.getItem('lyricsSettings'));
 const lyricsType = lyricsSettings ? lyricsSettings.lyricsType : 'lrc';
 const fileNameFormat = lyricsSettings ? lyricsSettings.fileNameFormat : ["track_name", "track_no", "album"];
 
-async function get_lyrics(id, lyricsType) {
+async function get_lyrics(id) {
     const response = await fetch(`https://spotify-lyrics-api-pi.vercel.app/?trackid=${id}&format=${lyricsType}`);
     if (response.status != 200) {
         return [null, null];
@@ -125,7 +125,7 @@ maxDownload = async (type, id) => {
         let variable = parseInt((progress / length) * 100);
         bar.style.width = `${variable}%`;
         bar.textContent = `${variable}%`;
-        res_lyric = await get_lyrics(trackid, lyricsType);
+        res_lyric = await get_lyrics(trackid);
         const lyrics = res_lyric[0];
         if (lyrics != null) {
             if (lyricsType === 'lrc') {
@@ -174,11 +174,10 @@ downloadbtn.forEach((btn) => {
     btn.addEventListener('click', async () => {
         btn.innerHTML = '<i class="fa fa-spinner fa-spin" aria-hidden="true"></i>';
         btn.classList.add('disabled');
-        const track_details = await fetch(`/api/tracks/${btn.getAttribute('data-id')}`).then(response => response.json());
-        console.log(track_details);
         const attributes = ['data-id', 'data-name', 'data-album', 'data-artist', 'data-title', 'data-length'];
+        const track_details = await fetch(`/api/tracks/${btn.getAttribute('data-id')}`).then(response => response.json());
         const [id, name, album, artist, title, length] = attributes.map(attr => btn.getAttribute(attr));
-        const response = await get_lyrics(id, lyricsType); 
+        const response = await get_lyrics(id); 
         let lyrics = response[0];
         let sync = response[1];
         if (lyrics == null) {
@@ -192,7 +191,7 @@ downloadbtn.forEach((btn) => {
             btn.previousElementSibling.textContent = 'Synced lyrics not available';
         }
         if (lyricsType === 'lrc') {
-            lyrics.unshift(`[ar:${track_details.artist}]\n[al:${track_details.album}]\n[ti:${track_details.name}]\n[length:${track_details.duration}]\n\n`);
+            lyrics.unshift(`[ar:${artist}]\n[al:${album}]\n[ti:${title}]\n[length:${length}]\n\n`);
             save_lyrics(lyrics, track_details, 'lrc');
         } else if (lyricsType === 'srt') {
             save_lyrics(lyrics, track_details, 'srt');

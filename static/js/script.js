@@ -9,7 +9,6 @@ const defaultSettings = {
 
 if (!savedSettings) {
     localStorage.setItem('lyricsSettings', JSON.stringify(defaultSettings));
-    tagify.addTags(defaultSettings.fileNameFormat);
     savedSettings = defaultSettings;
 }
 

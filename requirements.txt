@@ -1,3 +1,0 @@
-flask==2.2.2
-Werkzeug==2.2.2
-spotipy==2.22.1

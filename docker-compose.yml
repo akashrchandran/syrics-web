@@ -1,0 +1,9 @@
+services:
+  syrics-web:
+    build: .
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_SPOTIFY_CLIENT_ID=${VITE_SPOTIFY_CLIENT_ID}
+      - VITE_LYRICS_API_BASE=${VITE_LYRICS_API_BASE}
+    restart: unless-stopped

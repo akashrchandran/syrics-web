@@ -7,7 +7,10 @@ A web application to download synced spotify lyrics in LRC format.
 ***
 
 # Live Deployment
-You can find site live deployed at https://syrics-web.vercel.app/
+You'll need to deploy it yourself for now. I'll update the README once I have some time.
+
+If it's easier, you can use the CLI version here:
+https://github.com/libre-lyrics/librelyrics-spotify
 
 ***
 
